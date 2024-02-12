@@ -13,14 +13,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory(20)->create();
-
         \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@gmail.com',
             'phone' => '01234',
             'password' => Hash::make('password'),
         ]);
+
+        \App\Models\User::factory(20)->create();
+        \App\Models\Brand::factory(20)->create();
+        \App\Models\Category::factory(20)->create();
+        \App\Models\SubCategory::factory(20)->create();
+
 
         $this->call([
             AdminsTableSeeder::class,

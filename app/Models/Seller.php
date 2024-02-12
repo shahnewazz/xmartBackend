@@ -22,6 +22,12 @@ class Seller extends Authenticatable
         'email',
         'password',
         'phone',
+        'image',
+        'banner',
+        'shop_name',
+        'slug',
+        'address',
+        'isVerified',
     ];
 
     /**
