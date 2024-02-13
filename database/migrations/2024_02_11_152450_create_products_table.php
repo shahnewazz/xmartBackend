@@ -24,7 +24,7 @@ return new class extends Migration
             $table->float('price', 8, 2)->default(0);
             $table->integer('discount')->default(0);
             $table->integer('stock')->default(0);
-            $table->enum('sale', [0,1])->default(0);
+            $table->boolean('sale')->default(false);
             $table->enum('conditions', ['new', 'popular', 'feature', 'winter'])->default('new');
             $table->enum('added_by', ['admin', 'seller'])->default('admin');
             $table->enum('status', ['active', 'inactive'])->default('inactive');

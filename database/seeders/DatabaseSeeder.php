@@ -20,15 +20,19 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
+        $this->call([
+            AdminsTableSeeder::class,
+        ]);
+
+        \App\Models\Seller::factory(50)->create();
         \App\Models\User::factory(20)->create();
         \App\Models\Brand::factory(20)->create();
         \App\Models\Category::factory(20)->create();
         \App\Models\SubCategory::factory(20)->create();
+        \App\Models\Product::factory(100)->create();
+        \App\Models\Slider::factory(7)->create();
 
 
-        $this->call([
-            AdminsTableSeeder::class,
-            SellersTableSeeder::class
-        ]);
+
     }
 }
