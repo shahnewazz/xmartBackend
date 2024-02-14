@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AdminsTableSeeder::class,
+            DivisionSeeder::class,
+            DistrictSeeder::class,
         ]);
 
         \App\Models\Seller::factory(50)->create();
