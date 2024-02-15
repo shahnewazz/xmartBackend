@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\BrandResourse;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-        //
+        return new BrandResourse(Brand::all());
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\DivisionResourse;
 use App\Models\Division;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class DivisionController extends Controller
      */
     public function index()
     {
-        //
+        return new DivisionResourse(Division::all());
     }
 
     /**
