@@ -10,32 +10,40 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\User\LoginRequest;
 use Illuminate\Validation\ValidationException;
+use Twilio\Rest\Client;
 
 class AuthController extends Controller
 {
     public function login(LoginRequest $request){
-        
+
         $user = User::where('phone', $request->phone)->first();
- 
+
         if (! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'phone' => ['The provided credentials are incorrect.'],
             ]);
         }
-     
+
         return $this->generateToken($user);
     }
 
     public function register(RegisterRequest $request){
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = User::create($request->validated());
 
-        return $this->generateToken($user);
+            $sid = getenv("TWILIO_ACCOUNT_SID");
+            $token = getenv("TWILIO_AUTH_TOKEN");
+            $servicesSid = getenv("TWILIO_VERIFICATION_SID");
+            $twilio = new Client($sid, $token);
+
+            $verification = $twilio->verify->v2->services("VA81a38cf6bd0059afc87a5afea7b7749f")
+            ->verifications
+            ->create("+88" . $user->phone, "sms");
+
+        // print($verification->status);
+        return response()->json($verification->status);
+
+        // return $this->generateToken($user);
     }
 
     public function generateToken($user){
