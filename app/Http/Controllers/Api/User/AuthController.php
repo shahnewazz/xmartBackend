@@ -31,19 +31,19 @@ class AuthController extends Controller
 
         $user = User::create($request->validated());
 
-            $sid = getenv("TWILIO_ACCOUNT_SID");
-            $token = getenv("TWILIO_AUTH_TOKEN");
-            $servicesSid = getenv("TWILIO_VERIFICATION_SID");
-            $twilio = new Client($sid, $token);
+            // $sid = getenv("TWILIO_ACCOUNT_SID");
+            // $token = getenv("TWILIO_AUTH_TOKEN");
+            // $servicesSid = getenv("TWILIO_VERIFICATION_SID");
+            // $twilio = new Client($sid, $token);
 
-            $verification = $twilio->verify->v2->services("VA81a38cf6bd0059afc87a5afea7b7749f")
-            ->verifications
-            ->create("+88" . $user->phone, "sms");
+            // $verification = $twilio->verify->v2->services($servicesSid)
+            // ->verifications
+            // ->create("+88" . $user->phone, "sms");
 
         // print($verification->status);
-        return response()->json($verification->status);
+        // return response()->json($verification->status);
 
-        // return $this->generateToken($user);
+        return $this->generateToken($user);
     }
 
     public function generateToken($user){
