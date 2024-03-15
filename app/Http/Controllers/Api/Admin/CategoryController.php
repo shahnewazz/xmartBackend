@@ -14,7 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return new CategoryResourse(Category::all());
+        $categories = Category::status('inactive')->paginate(10);
+        return CategoryResourse::collection($categories);
     }
 
     /**

@@ -16,5 +16,7 @@ class Slider extends Model
      */
     protected $guarded = [];
 
-    
+    public function scopeActive($query){
+        $query->where('status', 'active');
+    }
 }

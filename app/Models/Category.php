@@ -15,4 +15,8 @@ class Category extends Model
      * @var array
      */
     protected $guarded = [];
+
+    public function scopeStatus($query, $status){
+        $query->where('status', $status);
+    }
 }
