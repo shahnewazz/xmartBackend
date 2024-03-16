@@ -12,9 +12,25 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new ProductResourse(Product::all());
+
+        try {
+            $limit = 10;
+            if($request->conditions == null){
+                $products = Product::paginate($limit);
+            }elseif($request->conditions === 'sale'){
+                $products = Product::sold()->paginate( $limit);
+            }else{
+                $products = Product::conditions($request->conditions)->paginate($limit);
+            }
+
+            return ProductResourse::collection($products);
+        } catch (\Exception $e) {
+           return send_msg($e->getMessage(), false, 500);
+        }
+
+
     }
 
     /**
