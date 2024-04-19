@@ -18,7 +18,7 @@ class AuthController extends Controller
 
         // dd($request);
         $user = User::where('phone', $request->phone)->first();
-        
+
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'phone' => ['The provided credentials are incorrect.'],
