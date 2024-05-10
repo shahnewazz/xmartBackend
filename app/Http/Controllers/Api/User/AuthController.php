@@ -16,35 +16,48 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request){
 
-        // dd($request);
+        // dd($request->phone);
         $user = User::where('phone', $request->phone)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'phone' => ['The provided credentials are incorrect.'],
-            ]);
-        }
+        // dd($user->phone, $request->phone);
 
-        return $this->generateToken($user);
+        // if (!$user || !Hash::check($request->password, $user->password)) {
+        //     throw ValidationException::withMessages([
+        //         'phone' => ['The provided credentials are incorrect.'],
+        //     ]);
+        // }
+
+        // dd($user->password, $request->password);
+
+        if(Hash::check($request->password, $user->password)){
+            return $this->generateToken($user);
+        }else{
+            throw ValidationException::withMessages([
+                'password' => 'The provided credentials are incorrect.',
+            ]);
+
+        };
+
     }
 
     public function register(RegisterRequest $request){
 
+        // dd($request->validated());
         $user = User::create($request->validated());
 
-            // $sid = getenv("TWILIO_ACCOUNT_SID");
-            // $token = getenv("TWILIO_AUTH_TOKEN");
-            // $servicesSid = getenv("TWILIO_VERIFICATION_SID");
-            // $twilio = new Client($sid, $token);
+            $sid = getenv("TWILIO_ACCOUNT_SID");
+            $token = getenv("TWILIO_AUTH_TOKEN");
+            $verificationSid = getenv("TWILIO_VERIFICATION_SID");
+            $twilio = new Client($sid, $token);
 
-            // $verification = $twilio->verify->v2->services($servicesSid)
-            // ->verifications
-            // ->create("+88" . $user->phone, "sms");
+            $verification = $twilio->verify->v2->services($verificationSid)
+            ->verifications
+            ->create("+88" . $user->phone, "sms");
 
-        // print($verification->status);
-        // return response()->json($verification->status);
+        print($verification->status);
+        return response()->json($verification->status);
 
-        return $this->generateToken($user);
+        // return $this->generateToken($user);
     }
 
     public function generateToken($user){
